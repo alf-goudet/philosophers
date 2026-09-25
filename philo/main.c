@@ -6,7 +6,7 @@
 /*   By: agoudet- <agoudet-@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/23 16:15:04 by agoudet-          #+#    #+#             */
-/*   Updated: 2026/09/25 14:21:42 by agoudet-         ###   ########.fr       */
+/*   Updated: 2026/09/25 16:34:28 by agoudet-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,21 +78,30 @@ static bool	args_are_all_digits(int argc, char **argv)
 	return (true);
 }
 
+static bool	non_zero_args(int argc, char **argv)
+{
+	int	i;
+	int	arg_as_nbr;
+
+	i = 1;
+	while (i < argc)
+	{
+		arg_as_nbr = ft_atoi(argv[i]);
+		if (arg_as_nbr == 0)
+		{
+			write(STDERR_FILENO, "Error: invalid argument value 0", 31);
+			write(STDERR_FILENO, "\n", 1);
+			return (false);
+		}
+		i++;
+	}
+	return (true);
+}
+
 int	main(int argc, char **argv)
 {
-	int	number_of_philosophers;
-	int	time_to_die;
-
 	if (!has_4_or_5_args(argc) || !no_signed_args(argc, argv)
-		|| !args_are_all_digits(argc, argv))
+		|| !args_are_all_digits(argc, argv) || !non_zero_args(argc, argv))
 		return (1);
-	number_of_philosophers = ft_atoi(argv[1]);
-	time_to_die = ft_atoi(argv[2]);
-	if (number_of_philosophers == 0 || time_to_die == 0)
-	{
-		write(STDERR_FILENO, "Error: 0 philosophers or no time to die", 39);
-		write(STDERR_FILENO, "\n", 1);
-		return (1);
-	}
 	return (0);
 }
