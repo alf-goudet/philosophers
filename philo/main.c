@@ -6,7 +6,7 @@
 /*   By: agoudet- <agoudet-@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/23 16:15:04 by agoudet-          #+#    #+#             */
-/*   Updated: 2026/09/24 21:13:18 by agoudet-         ###   ########.fr       */
+/*   Updated: 2026/09/25 14:21:42 by agoudet-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static bool	no_signed_args(int argc, char **argv)
 	i = 0;
 	while (i < argc)
 	{
-		if (*argv[i] == '-')
+		if (*argv[i] == '-' || *argv[i] == '+')
 		{
 			write(STDERR_FILENO, "Error: No signed numbers accepted", 33);
 			write(STDERR_FILENO, "\n", 1);
