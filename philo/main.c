@@ -6,7 +6,7 @@
 /*   By: agoudet- <agoudet-@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/23 16:15:04 by agoudet-          #+#    #+#             */
-/*   Updated: 2026/09/25 16:34:28 by agoudet-         ###   ########.fr       */
+/*   Updated: 2026/09/29 21:44:39 by agoudet-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,8 +100,13 @@ static bool	non_zero_args(int argc, char **argv)
 
 int	main(int argc, char **argv)
 {
+	t_data	data;
+
 	if (!has_4_or_5_args(argc) || !no_signed_args(argc, argv)
 		|| !args_are_all_digits(argc, argv) || !non_zero_args(argc, argv))
 		return (1);
+	init_data(argv, &data);
+	clean_up_forks(data.forks, data.number_of_philosophers);
+	free(data.philos);
 	return (0);
 }

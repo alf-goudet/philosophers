@@ -6,7 +6,7 @@
 /*   By: agoudet- <agoudet-@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/23 16:14:01 by agoudet-          #+#    #+#             */
-/*   Updated: 2026/09/24 21:12:59 by agoudet-         ###   ########.fr       */
+/*   Updated: 2026/09/29 21:08:12 by agoudet-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,47 @@
 // Header inclusions
 # include <unistd.h> // for write
 # include <stdio.h> // for printf
+# include <string.h> // for memset
+# include <stdlib.h> // for malloc and free
 # include <stdbool.h> // for more explicit true/false values where required
 # include <limits.h> // for INT_MAX
+# include <pthread.h> // for multithreading (pthread and mutex management)
 
 // Typedefs and structure definitions
+
+typedef pthread_mutex_t	t_fork; // Alias for mutex-represented forks
+
+typedef struct s_philo
+{
+	unsigned int	id;
+	pthread_t		thread;
+	unsigned int	left_fork;
+	unsigned int	right_fork;
+	unsigned int	last_meal_time;
+	unsigned int	meals_eaten;
+}					t_philo;
+
+typedef struct s_data
+{
+	unsigned int	number_of_philosophers;
+	unsigned int	time_to_die;
+	unsigned int	time_to_eat;
+	unsigned int	time_to_sleep;
+	unsigned int	number_of_times_each_philosopher_must_eat;
+	unsigned int	start_time;
+	unsigned int	run_flag;
+	t_fork			*forks;
+	t_philo			*philos;
+	pthread_mutex_t	*print_lock;
+	pthread_mutex_t	*state_lock;
+}					t_data;
 
 // Helper functions
 size_t	ft_strlen(const char *s);
 int		ft_isdigit(int c);
+void	ft_putendl_fd(char *s, int fd);
 int		ft_atoi(const char *nptr);
+void	init_data(char **argv, t_data *data);
+void	clean_up_forks(t_fork *forks, size_t allocd);
 
 #endif

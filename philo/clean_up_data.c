@@ -1,40 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   clean_up_data.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agoudet- <agoudet-@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/09/23 16:15:55 by agoudet-          #+#    #+#             */
-/*   Updated: 2026/09/29 19:50:12 by agoudet-         ###   ########.fr       */
+/*   Created: 2026/09/29 19:59:27 by agoudet-          #+#    #+#             */
+/*   Updated: 2026/09/29 21:39:33 by agoudet-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	ft_isdigit(int c)
-{
-	if (c >= '0' && c <= '9')
-		return (1);
-	else
-		return (0);
-}
-
-size_t	ft_strlen(const char *s)
+void	clean_up_forks(t_fork *forks, size_t allocd)
 {
 	size_t	i;
 
 	i = 0;
-	while (s[i] != '\0')
+	while (i < allocd)
+	{
+		pthread_mutex_destroy(&forks[i]);
 		i++;
-	return (i);
-}
-
-void	ft_putendl_fd(char *s, int fd)
-{
-	size_t	len;
-
-	len = ft_strlen(s);
-	write(fd, s, len);
-	write(fd, "\n", 1);
+	}
+	free(forks);
 }

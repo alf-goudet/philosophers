@@ -1,11 +1,11 @@
 NAME = philo
 
-SRCS = ft_atoi_philo.c utils.c main.c
+SRCS = ft_atoi_philo.c utils.c init.c clean_up_data.c main.c
 
 OBJS = $(SRCS:.c=.o)
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -pthread
 
 all: $(NAME)
 
