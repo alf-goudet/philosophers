@@ -6,7 +6,7 @@
 /*   By: agoudet- <agoudet-@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/25 20:10:06 by agoudet-          #+#    #+#             */
-/*   Updated: 2026/09/29 21:34:44 by agoudet-         ###   ########.fr       */
+/*   Updated: 2026/09/30 15:16:12 by agoudet-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static int	init_forks(t_data *data);
 
 static int	init_philos(t_data *data);
 
-void	init_data(char **argv, t_data *data)
+int	init_data(char **argv, t_data *data)
 {
 	int	init_check;
 
@@ -31,13 +31,14 @@ void	init_data(char **argv, t_data *data)
 	data->run_flag = 0;
 	init_check = init_forks(data);
 	if (init_check != 0)
-		return ;
+		return (init_check);
 	init_check = init_philos(data);
 	if (init_check != 0)
 	{
 		clean_up_forks(data->forks, data->number_of_philosophers);
-		return ;
+		return (init_check);
 	}
+	return (0);
 }
 
 // Need to handle malloc failure cleanly

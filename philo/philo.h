@@ -6,7 +6,7 @@
 /*   By: agoudet- <agoudet-@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/23 16:14:01 by agoudet-          #+#    #+#             */
-/*   Updated: 2026/09/29 21:08:12 by agoudet-         ###   ########.fr       */
+/*   Updated: 2026/09/30 15:11:14 by agoudet-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ size_t	ft_strlen(const char *s);
 int		ft_isdigit(int c);
 void	ft_putendl_fd(char *s, int fd);
 int		ft_atoi(const char *nptr);
-void	init_data(char **argv, t_data *data);
+int		init_data(char **argv, t_data *data);
 void	clean_up_forks(t_fork *forks, size_t allocd);
 
 #endif
