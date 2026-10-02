@@ -6,7 +6,7 @@
 /*   By: agoudet- <agoudet-@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/23 16:14:01 by agoudet-          #+#    #+#             */
-/*   Updated: 2026/09/30 15:11:14 by agoudet-         ###   ########.fr       */
+/*   Updated: 2026/10/02 20:15:21 by agoudet-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,23 @@
 # define PHILO_H
 
 // Header inclusions
+
+# include <sys/types.h> // for ssize_t, time_t and suseconds_t types
+/*
+ * NOTE: time_t and suseconds_t are data types for time in seconds and time
+ * in microseconds. These are the data types for the corresponding members
+ * of timeval, a struct the gettimeofday() function (more below) needs a
+ * pointer to.
+ *
+ * Additionally, usleep requires an argument of type time_t.
+ */
+# include <stdbool.h> // for more explicit true/false values where required
 # include <unistd.h> // for write
 # include <stdio.h> // for printf
 # include <string.h> // for memset
 # include <stdlib.h> // for malloc and free
-# include <stdbool.h> // for more explicit true/false values where required
 # include <limits.h> // for INT_MAX
+# include <sys/time.h> // for timeval variables, gettimeofday and usleep
 # include <pthread.h> // for multithreading (pthread and mutex management)
 
 // Typedefs and structure definitions
@@ -57,6 +68,7 @@ int		ft_isdigit(int c);
 void	ft_putendl_fd(char *s, int fd);
 int		ft_atoi(const char *nptr);
 int		init_data(char **argv, t_data *data);
+long	get_time_in_ms(void);
 void	clean_up_forks(t_fork *forks, size_t allocd);
 
 #endif
