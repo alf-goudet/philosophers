@@ -6,7 +6,7 @@
 /*   By: agoudet- <agoudet-@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/23 16:15:04 by agoudet-          #+#    #+#             */
-/*   Updated: 2026/10/02 18:08:56 by agoudet-         ###   ########.fr       */
+/*   Updated: 2026/10/03 19:14:33 by agoudet-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,8 +100,9 @@ static bool	non_zero_args(int argc, char **argv)
 
 int	main(int argc, char **argv)
 {
-	t_data	data;
-	int		check;
+	t_data		data;
+	long long	time_in_ms;
+	int			check;
 
 	if (!has_4_or_5_args(argc) || !no_signed_args(argc, argv)
 		|| !args_are_all_digits(argc, argv) || !non_zero_args(argc, argv))
@@ -109,7 +110,9 @@ int	main(int argc, char **argv)
 	check = init_data(argv, &data);
 	if (check != 0)
 		return (1);
-	get_time_in_ms();
+	time_in_ms = get_time_in_ms();
+	if (time_in_ms == -1)
+		return (1);
 	clean_up_forks(data.forks, data.number_of_philosophers);
 	free(data.philos);
 	return (0);

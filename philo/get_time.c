@@ -6,16 +6,16 @@
 /*   By: agoudet- <agoudet-@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/01 18:58:55 by agoudet-          #+#    #+#             */
-/*   Updated: 2026/10/02 20:15:18 by agoudet-         ###   ########.fr       */
+/*   Updated: 2026/10/03 19:12:05 by agoudet-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-long	get_time_in_ms(void)
+long long	get_time_in_ms(void)
 {
 	struct timeval	time;
-	long			time_in_ms;
+	long long		time_in_ms;
 	int				gt_check;
 
 	gt_check = gettimeofday(&time, NULL);
@@ -24,6 +24,7 @@ long	get_time_in_ms(void)
 		ft_putendl_fd("Error: gettimeofday failed", STDERR_FILENO);
 		return (-1);
 	}
-	printf("Time retrieved by gettimeofday: %ld\n", time.tv_sec);
-	return ();
+	time_in_ms = (long long)((time.tv_sec * 1000) + (time.tv_usec / 1000));
+	printf("Time in miliseconds: %lld\n", time_in_ms);
+	return (time_in_ms);
 }
