@@ -6,7 +6,7 @@
 /*   By: agoudet- <agoudet-@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/23 16:15:55 by agoudet-          #+#    #+#             */
-/*   Updated: 2026/10/06 15:05:19 by agoudet-         ###   ########.fr       */
+/*   Updated: 2026/10/12 18:03:33 by agoudet-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,14 @@ size_t	ft_strlen(const char *s)
 	return (i);
 }
 
-void	ft_putendl_fd(char *s, int fd)
+void	print_error(char *msg)
 {
 	size_t	len;
 
-	len = ft_strlen(s);
-	write(fd, s, len);
-	write(fd, "\n", 1);
+	len = ft_strlen(msg);
+	write(STDERR_FILENO, "Error: ", 7);
+	write(STDERR_FILENO, msg, len);
+	write(STDERR_FILENO, "\n", 1);
 }
 
 int	ft_usleep(size_t ms)
@@ -57,7 +58,7 @@ int	ft_usleep(size_t ms)
 		check = usleep(half_a_ms);
 		if (check == -1)
 		{
-			ft_putendl_fd("Error: usleep failed", STDERR_FILENO);
+			print_error("usleep failed");
 			return (-1);
 		}
 		current_time = get_time_in_ms();

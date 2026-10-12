@@ -6,7 +6,7 @@
 /*   By: agoudet- <agoudet-@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/23 16:15:04 by agoudet-          #+#    #+#             */
-/*   Updated: 2026/10/06 15:33:25 by agoudet-         ###   ########.fr       */
+/*   Updated: 2026/10/12 18:10:01 by agoudet-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,20 +16,17 @@ static bool	has_4_or_5_args(int argc)
 {
 	if (argc == 1)
 	{
-		write(STDERR_FILENO, "Error: No arguments given", 25);
-		write(STDERR_FILENO, "\n", 1);
+		print_error("No arguments given");
 		return (false);
 	}
 	else if (argc < 5)
 	{
-		write(STDERR_FILENO, "Error: Too few arguments", 24);
-		write(STDERR_FILENO, "\n", 1);
+		print_error("Too few arguments");
 		return (false);
 	}
 	else if (argc > 6)
 	{
-		write(STDERR_FILENO, "Error: Too many arguments", 25);
-		write(STDERR_FILENO, "\n", 1);
+		print_error("Too many arguments");
 		return (false);
 	}
 	else
@@ -45,8 +42,7 @@ static bool	no_signed_args(int argc, char **argv)
 	{
 		if (*argv[i] == '-' || *argv[i] == '+')
 		{
-			write(STDERR_FILENO, "Error: No signed numbers accepted", 33);
-			write(STDERR_FILENO, "\n", 1);
+			print_error("No signed numbers accepted");
 			return (false);
 		}
 		i++;
@@ -67,8 +63,7 @@ static bool	args_are_all_digits(int argc, char **argv)
 		{
 			if (!ft_isdigit(argv[i][j]))
 			{
-				write(STDERR_FILENO, "Error: Non-digit in args", 24);
-				write(STDERR_FILENO, "\n", 1);
+				print_error("Non-digit in args");
 				return (false);
 			}
 			j++;
@@ -89,8 +84,7 @@ static bool	non_zero_args(int argc, char **argv)
 		arg_as_nbr = ft_atoi(argv[i]);
 		if (arg_as_nbr == 0)
 		{
-			write(STDERR_FILENO, "Error: invalid argument value 0", 31);
-			write(STDERR_FILENO, "\n", 1);
+			print_error("invalid argument value 0");
 			return (false);
 		}
 		i++;

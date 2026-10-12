@@ -6,7 +6,7 @@
 /*   By: agoudet- <agoudet-@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/01 18:58:55 by agoudet-          #+#    #+#             */
-/*   Updated: 2026/10/06 15:36:12 by agoudet-         ###   ########.fr       */
+/*   Updated: 2026/10/12 18:14:10 by agoudet-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ ssize_t	get_time_in_ms(void)
 	gt_check = gettimeofday(&time, NULL);
 	if (gt_check == -1)
 	{
-		ft_putendl_fd("Error: gettimeofday failed", STDERR_FILENO);
+		print_error("gettimeofday failed");
 		return (-1);
 	}
 	time_sec_in_ms = (ssize_t)(time.tv_sec * 1000);
