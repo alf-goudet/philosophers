@@ -6,7 +6,7 @@
 /*   By: agoudet- <agoudet-@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/23 16:15:04 by agoudet-          #+#    #+#             */
-/*   Updated: 2026/10/12 18:10:01 by agoudet-         ###   ########.fr       */
+/*   Updated: 2026/10/23 20:33:15 by agoudet-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,6 @@ static bool	non_zero_args(int argc, char **argv)
 int	main(int argc, char **argv)
 {
 	t_data		data;
-	ssize_t		start;
 	int			check;
 
 	if (!has_4_or_5_args(argc) || !no_signed_args(argc, argv)
@@ -104,12 +103,17 @@ int	main(int argc, char **argv)
 	check = init_data(argv, &data);
 	if (check != 0)
 		return (1);
-	start = get_time_in_ms();
-	if (start == -1)
+	if (data.number_of_philosophers == 1)
+	{
+		pthread_create(&data->philos[0]->thread, NULL, &one_philo_case, NULL);
+	}
+	check = spawn_threads(&data);
+	if (check != 0)
 		return (1);
-	check = ft_usleep(200);
-	printf("Elapsed: %ld ms\n", get_time_in_ms() - start);
-	clean_up_forks(data.forks, data.number_of_philosophers);
+	check = join_threads(&data, data.number_of_philosophers);
+	if (check != 0)
+		return (1);
+	destroy_mutexes(&data, data.number_of_philosophers);
 	free(data.philos);
 	return (0);
 }

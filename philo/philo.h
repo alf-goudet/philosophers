@@ -6,7 +6,7 @@
 /*   By: agoudet- <agoudet-@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/23 16:14:01 by agoudet-          #+#    #+#             */
-/*   Updated: 2026/10/12 18:03:00 by agoudet-         ###   ########.fr       */
+/*   Updated: 2026/10/23 20:01:19 by agoudet-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,11 +55,11 @@ typedef struct s_data
 	unsigned int	time_to_sleep;
 	unsigned int	number_of_times_each_philosopher_must_eat;
 	unsigned int	start_time;
-	unsigned int	run_flag;
+	bool			running;
 	t_fork			*forks;
 	t_philo			*philos;
-	pthread_mutex_t	*print_lock;
-	pthread_mutex_t	*state_lock;
+	pthread_mutex_t	print_lock;
+	pthread_mutex_t	state_lock;
 }					t_data;
 
 // Helper functions
@@ -70,6 +70,8 @@ int			ft_atoi(const char *nptr);
 int			ft_usleep(size_t ms);
 int			init_data(char **argv, t_data *data);
 ssize_t		get_time_in_ms(void);
-void		clean_up_forks(t_fork *forks, size_t allocd);
+void		destroy_mutexes(t_data *data, size_t allocd);
+int			spawn_threads(t_data *data);
+int			join_threads(t_data *data);
 
 #endif

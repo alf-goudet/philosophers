@@ -6,7 +6,7 @@
 /*   By: agoudet- <agoudet-@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/25 20:10:06 by agoudet-          #+#    #+#             */
-/*   Updated: 2026/09/30 15:16:12 by agoudet-         ###   ########.fr       */
+/*   Updated: 2026/10/20 19:52:25 by agoudet-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ int	init_data(char **argv, t_data *data)
 		clean_up_forks(data->forks, data->number_of_philosophers);
 		return (init_check);
 	}
+	pthread_mutex_init(&data->print_lock, NULL);
+	pthread_mutex_init(&data->state_lock, NULL);
 	return (0);
 }
 

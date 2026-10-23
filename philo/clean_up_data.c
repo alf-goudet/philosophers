@@ -6,21 +6,24 @@
 /*   By: agoudet- <agoudet-@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/29 19:59:27 by agoudet-          #+#    #+#             */
-/*   Updated: 2026/09/29 21:39:33 by agoudet-         ###   ########.fr       */
+/*   Updated: 2026/10/23 20:01:19 by agoudet-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	clean_up_forks(t_fork *forks, size_t allocd)
+void	destroy_mutexes(t_data *data, size_t allocd_forks)
 {
 	size_t	i;
 
 	i = 0;
-	while (i < allocd)
+	while (i < allocd_forks)
 	{
-		pthread_mutex_destroy(&forks[i]);
+		pthread_mutex_destroy(&data->forks[i]);
 		i++;
 	}
 	free(forks);
+	pthread_mutex_destroy(&data->print_lock);
+	pthread_mutex_destroy(&data->state_lock);
+	return ;
 }
