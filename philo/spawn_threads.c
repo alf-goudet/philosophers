@@ -6,7 +6,7 @@
 /*   By: agoudet- <agoudet-@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/19 19:26:27 by agoudet-          #+#    #+#             */
-/*   Updated: 2026/10/23 20:01:19 by agoudet-         ###   ########.fr       */
+/*   Updated: 2026/11/04 21:11:50 by agoudet-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,20 @@
 
 int	spawn_threads(t_data *data)
 {
+	size_t		*i_ptr;
 	size_t		i;
 	size_t		total_philos;
-	t_philo		*curr_philo;
 	pthread_t	*curr_thread;
 	int			check;
 
 	total_philos = data->number_of_philosophers;
+	i_ptr = &data->philo_idx;
 	i = 0;
 	while (i < total_philos)
 	{
-		curr_philo = &data->philos[i];
-		curr_thread = &curr_philo->thread;
-		check = pthread_create(curr_thread, NULL, &philo_routine, curr_philo);
+		*i_ptr = i;
+		curr_thread = &(data->philos[i].thread);
+		check = pthread_create(curr_thread, NULL, &philo_routine, data);
 		if (check != 0)
 		{
 			print_error("Couldn't create a thread");
@@ -43,17 +44,14 @@ int	spawn_threads(t_data *data)
 int	join_threads(t_data *data, size_t running_threads)
 {
 	size_t		i;
-	size_t		total_philos;
-	t_philo		*philos;
-	pthread_t	curr_thread;
+	t_philo		*curr_philo;
 	int			check;
 
-	philos = data->philos;
 	i = 0;
 	while (i < running_threads)
 	{
-		curr_thread = (philos + i)->thread;
-		check = pthread_join(curr_thread, NULL);
+		curr_philo = &(data->philos[i]);
+		check = pthread_join(curr_philo->thread, NULL);
 		if (check != 0)
 		{
 			print_error("Couldn't join a thread");

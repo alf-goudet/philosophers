@@ -6,7 +6,7 @@
 /*   By: agoudet- <agoudet-@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/23 16:14:01 by agoudet-          #+#    #+#             */
-/*   Updated: 2026/10/23 20:01:19 by agoudet-         ###   ########.fr       */
+/*   Updated: 2026/11/02 19:25:27 by agoudet-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,28 +36,30 @@
 // Typedefs and structure definitions
 
 typedef pthread_mutex_t	t_fork; // Alias for mutex-represented forks
+typedef ssize_t	t_time_msec;	// Alias for time values in miliseconds
 
 typedef struct s_philo
 {
-	unsigned int	id;
 	pthread_t		thread;
+	unsigned int	id;
 	unsigned int	left_fork;
 	unsigned int	right_fork;
-	unsigned int	last_meal_time;
 	unsigned int	meals_eaten;
+	t_time_msec		last_meal_time;
 }					t_philo;
 
 typedef struct s_data
 {
 	unsigned int	number_of_philosophers;
-	unsigned int	time_to_die;
-	unsigned int	time_to_eat;
-	unsigned int	time_to_sleep;
+	t_time_msec		time_to_die;
+	t_time_msec		time_to_eat;
+	t_time_msec		time_to_sleep;
 	unsigned int	number_of_times_each_philosopher_must_eat;
-	unsigned int	start_time;
+	t_time_msec		start;
 	bool			running;
 	t_fork			*forks;
 	t_philo			*philos;
+	size_t			philo_idx;
 	pthread_mutex_t	print_lock;
 	pthread_mutex_t	state_lock;
 }					t_data;
@@ -69,9 +71,10 @@ void		print_error(char *msg);
 int			ft_atoi(const char *nptr);
 int			ft_usleep(size_t ms);
 int			init_data(char **argv, t_data *data);
-ssize_t		get_time_in_ms(void);
+t_time_msec	get_time_in_ms(void);
 void		destroy_mutexes(t_data *data, size_t allocd);
 int			spawn_threads(t_data *data);
-int			join_threads(t_data *data);
+int			join_threads(t_data *data, size_t running_threads);
+void		*philo_routine(void *arg);
 
 #endif

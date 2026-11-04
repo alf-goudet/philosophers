@@ -6,7 +6,7 @@
 /*   By: agoudet- <agoudet-@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/25 20:10:06 by agoudet-          #+#    #+#             */
-/*   Updated: 2026/10/20 19:52:25 by agoudet-         ###   ########.fr       */
+/*   Updated: 2026/11/04 19:53:59 by agoudet-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,15 @@ int	init_data(char **argv, t_data *data)
 	data->time_to_eat = ft_atoi(argv[3]);
 	data->time_to_sleep = ft_atoi(argv[4]);
 	data->number_of_times_each_philosopher_must_eat = ft_atoi(argv[5]);
-	data->start_time = 0;
-	data->run_flag = 0;
+	data->start = 0;
+	data->running = 0;
 	init_check = init_forks(data);
 	if (init_check != 0)
 		return (init_check);
 	init_check = init_philos(data);
 	if (init_check != 0)
 	{
-		clean_up_forks(data->forks, data->number_of_philosophers);
+		destroy_mutexes(data, data->number_of_philosophers);
 		return (init_check);
 	}
 	pthread_mutex_init(&data->print_lock, NULL);
@@ -62,7 +62,7 @@ static int	init_forks(t_data *data)
 		mtx_init_check = pthread_mutex_init(current_fork, NULL);
 		if (mtx_init_check != 0)
 		{
-			clean_up_forks(data->forks, i);
+			destroy_mutexes(data, i);
 			return (mtx_init_check);
 		}
 		i++;
@@ -83,17 +83,17 @@ static int	init_philos(t_data *data)
 	if (data->philos == NULL)
 		return (-1);
 	i = 1;
-	current_philo = &(data->philos[i - 1]);
 	while (i <= total_philos)
 	{
+		current_philo = &(data->philos[i - 1]);
 		current_philo->id = i;
 		current_philo->left_fork = i - 1;
 		current_philo->right_fork = i % total_philos;
 		current_philo->last_meal_time = 0;
 		current_philo->meals_eaten = 0;
 		i++;
-		current_philo = &(data->philos[i - 1]);
 	}
+	current_philo = &(data->philos[i - 1]);
 	memset(current_philo, 0, sizeof(t_philo));
 	return (0);
 }
