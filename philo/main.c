@@ -6,7 +6,7 @@
 /*   By: agoudet- <agoudet-@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/23 16:15:04 by agoudet-          #+#    #+#             */
-/*   Updated: 2026/10/24 18:11:53 by agoudet-         ###   ########.fr       */
+/*   Updated: 2026/11/05 19:22:24 by agoudet-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,12 +106,6 @@ int	main(int argc, char **argv)
 	check = spawn_threads(&data);
 	if (check != 0)
 		return (1);
-	check = join_threads(&data, data.number_of_philosophers);
-	if (check != 0)
-	{
-		printf("Error %d\n", check);
-		return (1);
-	}
 	destroy_mutexes(&data, data.number_of_philosophers);
 	free(data.philos);
 	return (0);
