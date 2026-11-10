@@ -6,36 +6,51 @@
 /*   By: agoudet- <agoudet-@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/19 19:26:27 by agoudet-          #+#    #+#             */
-/*   Updated: 2026/11/05 20:50:32 by agoudet-         ###   ########.fr       */
+/*   Updated: 2026/11/10 20:38:28 by agoudet-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	spawn_threads(t_data *data)
+void	pthread_create_error(t_data *data, size_t i, size_t total_philos)
 {
-	size_t		*i_ptr;
+	print_error("Couldn't create a thread");
+	data->running = false;
+	join_threads(data, i);
+	destroy_mutexes(data, total_philos);	
+}
+
+static void	one_philo_case(t_data *data)
+{
+	t_philo	*philo;
+
+	philo = &(data->philos[0]);
+	pthread_create(&(philo->thread), NULL, &one_philo_routine, data);
+	pthread_join(philo->thread, NULL);
+}
+
+int	spawn_threads(t_data *data, size_t total_philos)
+{
 	size_t		i;
-	size_t		total_philos;
+	t_philo		*curr_philo;
 	pthread_t	*curr_thread;
 	int			check;
 
-	total_philos = data->number_of_philosophers;
-	i_ptr = &data->philo_idx;
+	data->start = get_time_in_ms();
+	if (total_philos == 1)
+	{
+		one_philo_case(data);
+		return (0);
+	}
 	i = 0;
 	while (i < total_philos)
 	{
-		*i_ptr = i;
-		curr_thread = &(data->philos[i].thread);
-		check = pthread_create(curr_thread, NULL, &philo_routine, data);
+		curr_philo = &(data->philos[i]);
+		curr_thread = &(curr_philo->thread);
+		check = pthread_create(curr_thread, NULL, &philo_routine, curr_philo);
 		if (check != 0)
-		{
-			print_error("Couldn't create a thread");
-			data->running = false;
-			join_threads(data, i);
-			destroy_mutexes(data, total_philos);
-			return (check);
-		}
+			return (pthread_create_error(data, i, total_philos), check);
+		usleep(1);
 		i++;
 	}
 	return (join_threads(data, total_philos));

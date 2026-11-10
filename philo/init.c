@@ -6,7 +6,7 @@
 /*   By: agoudet- <agoudet-@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/25 20:10:06 by agoudet-          #+#    #+#             */
-/*   Updated: 2026/11/04 19:53:59 by agoudet-         ###   ########.fr       */
+/*   Updated: 2026/11/10 20:06:48 by agoudet-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,10 +87,11 @@ static int	init_philos(t_data *data)
 	{
 		current_philo = &(data->philos[i - 1]);
 		current_philo->id = i;
-		current_philo->left_fork = i - 1;
-		current_philo->right_fork = i % total_philos;
+		current_philo->left_fork = &(data->forks[i - 1]);
+		current_philo->right_fork = &(data->forks[i % total_philos]);
 		current_philo->last_meal_time = 0;
 		current_philo->meals_eaten = 0;
+		current_philo->data = data;
 		i++;
 	}
 	current_philo = &(data->philos[i - 1]);
