@@ -6,7 +6,7 @@
 /*   By: agoudet- <agoudet-@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/23 16:15:55 by agoudet-          #+#    #+#             */
-/*   Updated: 2026/10/12 18:03:33 by agoudet-         ###   ########.fr       */
+/*   Updated: 2026/11/10 21:34:55 by agoudet-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,4 +67,16 @@ int	ft_usleep(size_t ms)
 		elapsed_time = (size_t)current_time - start_time;
 	}
 	return (0);
+}
+
+void	print_status(t_philo *philo, char *status)
+{
+	t_data		*data;
+	t_time_msec	current;
+
+	data = philo->data;
+	pthread_mutex_lock(&(data->print_lock));
+	current = get_time_in_ms() - data->start;
+	printf("%zd %d %s\n", current, philo->id, status);
+	pthread_mutex_unlock(&(data->print_lock));
 }
