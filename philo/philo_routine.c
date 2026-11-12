@@ -6,7 +6,7 @@
 /*   By: agoudet- <agoudet-@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/23 19:19:14 by agoudet-          #+#    #+#             */
-/*   Updated: 2026/11/12 20:42:23 by agoudet-         ###   ########.fr       */
+/*   Updated: 2026/11/12 21:39:22 by agoudet-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,24 +30,21 @@ void	*one_philo_routine(void *arg)
 	return (NULL);
 }
 
+// Asynchronous fork acquisition logic:
+// -----------------------------------
+// For philosophers with even-numbered IDs, a short pause of 10 ms is enforced
+// so that odd-numbered philosophers start taking forks first, preventing
+// deadlocks due to circular wait.
 static void	assign_forks(t_philo *philo)
 {
 	const bool	id_is_even = philo->id % 2 == 0;
 
 	if (id_is_even)
-	{
-		pthread_mutex_lock(philo->right_fork);
-		print_status(philo, "has taken a fork");
-		pthread_mutex_lock(philo->left_fork);
-		print_status(philo, "has taken a fork");
-	}
-	else		
-	{
-		pthread_mutex_lock(philo->left_fork);
-		print_status(philo, "has taken a fork");
-		pthread_mutex_lock(philo->right_fork);
-		print_status(philo, "has taken a fork");
-	}
+		ft_usleep(10);
+	pthread_mutex_lock(philo->left_fork);
+	print_status(philo, "has taken a fork");
+	pthread_mutex_lock(philo->right_fork);
+	print_status(philo, "has taken a fork");
 }
 
 void	*philo_routine(void *arg)
