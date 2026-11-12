@@ -6,7 +6,7 @@
 /*   By: agoudet- <agoudet-@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/23 19:19:14 by agoudet-          #+#    #+#             */
-/*   Updated: 2026/11/10 21:35:54 by agoudet-         ###   ########.fr       */
+/*   Updated: 2026/11/12 20:42:23 by agoudet-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,28 @@ void	*one_philo_routine(void *arg)
 	ft_usleep(data->time_to_die);
 	current = get_time_in_ms() - data->start;
 	printf("%zd %d died\n", current, philo->id);
+	pthread_mutex_unlock(philo->left_fork);
 	return (NULL);
+}
+
+static void	assign_forks(t_philo *philo)
+{
+	const bool	id_is_even = philo->id % 2 == 0;
+
+	if (id_is_even)
+	{
+		pthread_mutex_lock(philo->right_fork);
+		print_status(philo, "has taken a fork");
+		pthread_mutex_lock(philo->left_fork);
+		print_status(philo, "has taken a fork");
+	}
+	else		
+	{
+		pthread_mutex_lock(philo->left_fork);
+		print_status(philo, "has taken a fork");
+		pthread_mutex_lock(philo->right_fork);
+		print_status(philo, "has taken a fork");
+	}
 }
 
 void	*philo_routine(void *arg)
@@ -40,10 +61,7 @@ void	*philo_routine(void *arg)
 	time_to_sleep = philo->data->time_to_sleep;
 	while (1)
 	{
-		pthread_mutex_lock(philo->left_fork);
-		print_status(philo, "has taken a fork");
-		pthread_mutex_lock(philo->right_fork);
-		print_status(philo, "has taken a fork");
+		assign_forks(philo);
 		philo->last_meal_time = get_time_in_ms();
 		print_status(philo, "is eating");
 		ft_usleep(time_to_eat);
