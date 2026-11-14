@@ -6,7 +6,7 @@
 /*   By: agoudet- <agoudet-@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/23 19:19:14 by agoudet-          #+#    #+#             */
-/*   Updated: 2026/11/10 21:35:54 by agoudet-         ###   ########.fr       */
+/*   Updated: 2026/11/14 19:28:09 by agoudet-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	*one_philo_routine(void *arg)
 	ft_usleep(data->time_to_die);
 	current = get_time_in_ms() - data->start;
 	printf("%zd %d died\n", current, philo->id);
+	pthread_mutex_unlock(philo->left_fork);
 	return (NULL);
 }
 
