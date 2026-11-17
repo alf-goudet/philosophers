@@ -6,7 +6,7 @@
 /*   By: agoudet- <agoudet-@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/19 19:26:27 by agoudet-          #+#    #+#             */
-/*   Updated: 2026/11/10 21:43:56 by agoudet-         ###   ########.fr       */
+/*   Updated: 2026/11/16 21:03:20 by agoudet-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	spawn_threads(t_data *data, size_t total_philos)
 			return (pthread_create_error(data, i, total_philos), check);
 		i++;
 	}
-	return (join_threads(data, total_philos));
+	return (0);
 }
 
 int	join_threads(t_data *data, size_t running_threads)

@@ -6,7 +6,7 @@
 /*   By: agoudet- <agoudet-@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/23 16:15:04 by agoudet-          #+#    #+#             */
-/*   Updated: 2026/11/10 18:01:09 by agoudet-         ###   ########.fr       */
+/*   Updated: 2026/11/16 21:02:58 by agoudet-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,8 +94,10 @@ static bool	non_zero_args(int argc, char **argv)
 
 int	main(int argc, char **argv)
 {
-	t_data		data;
-	int			check;
+	t_data			data;
+	pthread_t		monitor_thread;
+	unsigned int	total_philos;
+	int				check;
 
 	if (!has_4_or_5_args(argc) || !no_signed_args(argc, argv)
 		|| !args_are_all_digits(argc, argv) || !non_zero_args(argc, argv))
@@ -103,10 +105,14 @@ int	main(int argc, char **argv)
 	check = init_data(argv, &data);
 	if (check != 0)
 		return (1);
-	check = spawn_threads(&data, data.number_of_philosophers);
+	total_philos = data.number_of_philosophers;
+	check = spawn_threads(&data, total_philos);
 	if (check != 0)
 		return (1);
-	destroy_mutexes(&data, data.number_of_philosophers);
+	check = pthread_create(&monitor_thread, NULL, &philo_monitor, &data);
+	pthread_join(monitor_thread, NULL);
+	join_threads(&data, total_philos);
+	destroy_mutexes(&data, total_philos);
 	free(data.philos);
 	return (0);
 }

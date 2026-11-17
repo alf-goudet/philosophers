@@ -6,7 +6,7 @@
 /*   By: agoudet- <agoudet-@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/23 16:14:01 by agoudet-          #+#    #+#             */
-/*   Updated: 2026/11/10 21:14:52 by agoudet-         ###   ########.fr       */
+/*   Updated: 2026/11/16 21:04:30 by agoudet-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ int			spawn_threads(t_data *data, size_t total_philos);
 int			join_threads(t_data *data, size_t running_threads);
 void		*philo_routine(void *arg);
 void		*one_philo_routine(void *arg);
+void		*philo_monitor(void *arg);
 void		print_status(t_philo *philo, char *status);
 
 #endif

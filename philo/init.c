@@ -6,7 +6,7 @@
 /*   By: agoudet- <agoudet-@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/25 20:10:06 by agoudet-          #+#    #+#             */
-/*   Updated: 2026/11/10 20:06:48 by agoudet-         ###   ########.fr       */
+/*   Updated: 2026/11/17 21:03:15 by agoudet-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	init_data(char **argv, t_data *data)
 	data->time_to_sleep = ft_atoi(argv[4]);
 	data->number_of_times_each_philosopher_must_eat = ft_atoi(argv[5]);
 	data->start = 0;
-	data->running = 0;
+	data->running = true;
 	init_check = init_forks(data);
 	if (init_check != 0)
 		return (init_check);
