@@ -6,7 +6,7 @@
 /*   By: agoudet- <agoudet-@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/23 16:15:04 by agoudet-          #+#    #+#             */
-/*   Updated: 2026/11/16 21:02:58 by agoudet-         ###   ########.fr       */
+/*   Updated: 2026/11/19 19:58:57 by agoudet-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,9 +109,12 @@ int	main(int argc, char **argv)
 	check = spawn_threads(&data, total_philos);
 	if (check != 0)
 		return (1);
-	check = pthread_create(&monitor_thread, NULL, &philo_monitor, &data);
-	pthread_join(monitor_thread, NULL);
-	join_threads(&data, total_philos);
+	if (total_philos != 1)
+	{
+		pthread_create(&monitor_thread, NULL, &philo_monitor, &data);
+		pthread_join(monitor_thread, NULL);
+		join_threads(&data, total_philos);
+	}
 	destroy_mutexes(&data, total_philos);
 	free(data.philos);
 	return (0);
