@@ -6,7 +6,7 @@
 /*   By: agoudet- <agoudet-@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/16 20:40:14 by agoudet-          #+#    #+#             */
-/*   Updated: 2026/11/17 21:09:24 by agoudet-         ###   ########.fr       */
+/*   Updated: 2026/11/19 19:42:27 by agoudet-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	*philo_monitor(void *arg)
 
 	data = (t_data *)arg;
 	philos = data->philos;
+	while (data->running)
 	{
 		i = 0;
 		while (i < data->number_of_philosophers)
