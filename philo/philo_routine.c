@@ -6,7 +6,7 @@
 /*   By: agoudet- <agoudet-@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/23 19:19:14 by agoudet-          #+#    #+#             */
-/*   Updated: 2026/11/12 20:42:23 by agoudet-         ###   ########.fr       */
+/*   Updated: 2026/11/19 20:22:16 by agoudet-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ void	*philo_routine(void *arg)
 		ft_usleep(time_to_eat);
 		pthread_mutex_unlock(philo->left_fork);
 		pthread_mutex_unlock(philo->right_fork);
+		philo->meals_eaten++;
 		print_status(philo, "is sleeping");
 		ft_usleep(time_to_sleep);
 		print_status(philo, "is thinking");

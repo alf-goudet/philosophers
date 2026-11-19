@@ -6,36 +6,62 @@
 /*   By: agoudet- <agoudet-@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/16 20:40:14 by agoudet-          #+#    #+#             */
-/*   Updated: 2026/11/19 19:42:27 by agoudet-         ###   ########.fr       */
+/*   Updated: 2026/11/19 20:47:54 by agoudet-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
+static void	monitor_death(t_data *data)
+{
+	size_t			i;
+	t_philo			*philos;
+	t_time_msec		time_since_last_meal;
+
+	philos = data->philos;
+	i = 0;
+	while (i < data->number_of_philosophers)
+	{
+		usleep(1000);
+		time_since_last_meal = get_time_in_ms() - philos[i].last_meal_time;
+		if (time_since_last_meal >= data->time_to_die)
+		{
+			print_status(&philos[i], "died");
+			data->running = false;
+			break ;
+		}
+		i++;
+	}
+}
+
+static void	monitor_meals(t_data *data)
+{
+	size_t			i;
+	t_philo			*philos;
+	unsigned int	meals_target;
+
+	meals_target = data->number_of_times_each_philosopher_must_eat;
+	if (meals_target == 0)
+		return ;
+	i = 0;
+	while (i < data->number_of_philosophers)
+	{
+		if (philo[i].meals_eaten < meals_target)
+			return ;
+		i++;
+	}
+	data->running = false;
+}
+
 void	*philo_monitor(void *arg)
 {
-	t_data			*data;
-	t_time_msec		since_last_meal;
-	t_philo			*philos;
-	size_t			i;
+	t_data	*data;
 
 	data = (t_data *)arg;
-	philos = data->philos;
 	while (data->running)
 	{
-		i = 0;
-		while (i < data->number_of_philosophers)
-		{
-			usleep(1000);
-			since_last_meal = get_time_in_ms() - philos[i].last_meal_time;
-			if (since_last_meal >= data->time_to_die)
-			{
-				print_status(&philos[i], "died");
-				data->running = false;
-				break ;
-			}
-			i++;
-		}
+		monitor_death(data);
+		monitor_meals(data);
 	}
 	return (NULL);
 }
