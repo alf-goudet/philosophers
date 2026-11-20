@@ -6,7 +6,7 @@
 /*   By: agoudet- <agoudet-@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/16 20:40:14 by agoudet-          #+#    #+#             */
-/*   Updated: 2026/11/19 20:47:54 by agoudet-         ###   ########.fr       */
+/*   Updated: 2026/11/20 14:12:42 by agoudet-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	monitor_death(t_data *data)
 	i = 0;
 	while (i < data->number_of_philosophers)
 	{
-		usleep(1000);
+		usleep(500);
 		time_since_last_meal = get_time_in_ms() - philos[i].last_meal_time;
 		if (time_since_last_meal >= data->time_to_die)
 		{
@@ -43,10 +43,12 @@ static void	monitor_meals(t_data *data)
 	meals_target = data->number_of_times_each_philosopher_must_eat;
 	if (meals_target == 0)
 		return ;
+	usleep(500);
+	philos = data->philos;
 	i = 0;
 	while (i < data->number_of_philosophers)
 	{
-		if (philo[i].meals_eaten < meals_target)
+		if (philos[i].meals_eaten < meals_target)
 			return ;
 		i++;
 	}

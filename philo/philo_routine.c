@@ -6,31 +6,20 @@
 /*   By: agoudet- <agoudet-@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/23 19:19:14 by agoudet-          #+#    #+#             */
-/*   Updated: 2026/11/19 20:22:16 by agoudet-         ###   ########.fr       */
+/*   Updated: 2026/11/20 14:08:40 by agoudet-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	*one_philo_routine(void *arg)
+static bool	simulation_is_running(t_data *data)
 {
-	t_data		*data;
-	t_philo		*philo;
-	t_time_msec	current;
-
-	data = (t_data *)arg;
-	philo = &data->philos[0];
-	current = 0;
-	pthread_mutex_lock(philo->left_fork);
-	printf("%zd %d has taken a fork\n", current, philo->id);
-	ft_usleep(data->time_to_die);
-	current = get_time_in_ms() - data->start;
-	printf("%zd %d died\n", current, philo->id);
-	pthread_mutex_unlock(philo->left_fork);
-	return (NULL);
+	if (data->running == false)
+		return (false);
+	return (true);
 }
 
-static void	assign_forks(t_philo *philo)
+static void	take_forks(t_philo *philo)
 {
 	const bool	id_is_even = philo->id % 2 == 0;
 
@@ -49,6 +38,13 @@ static void	assign_forks(t_philo *philo)
 		print_status(philo, "has taken a fork");
 	}
 }
+// NOTE on take_forks() above
+//
+// Philosophers take forks through an asymmetrical grab logic:
+// 1. Even-numbered philosophers (2,4,6...) take their right fork first.
+// 2. The rest (i.e. odd-numbered; 1,3,5...) take their left fork first.
+//
+// This strategy prevents a deadlock by breaking the circular wait condition.
 
 void	*philo_routine(void *arg)
 {
@@ -59,9 +55,9 @@ void	*philo_routine(void *arg)
 	philo = (t_philo *)arg;
 	time_to_eat = philo->data->time_to_eat;
 	time_to_sleep = philo->data->time_to_sleep;
-	while (1)
+	while (simulation_is_running(philo->data))
 	{
-		assign_forks(philo);
+		take_forks(philo);
 		philo->last_meal_time = get_time_in_ms();
 		print_status(philo, "is eating");
 		ft_usleep(time_to_eat);
@@ -72,5 +68,24 @@ void	*philo_routine(void *arg)
 		ft_usleep(time_to_sleep);
 		print_status(philo, "is thinking");
 	}
+	return (NULL);
+}
+
+// Routine version for case of only 1 philosopher
+void	*one_philo_routine(void *arg)
+{
+	t_data		*data;
+	t_philo		*philo;
+	t_time_msec	current;
+
+	data = (t_data *)arg;
+	philo = &data->philos[0];
+	current = 0;
+	pthread_mutex_lock(philo->left_fork);
+	printf("%zd %d has taken a fork\n", current, philo->id);
+	ft_usleep(data->time_to_die);
+	current = get_time_in_ms() - data->start;
+	printf("%zd %d died\n", current, philo->id);
+	pthread_mutex_unlock(philo->left_fork);
 	return (NULL);
 }
