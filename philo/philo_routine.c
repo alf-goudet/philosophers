@@ -6,23 +6,18 @@
 /*   By: agoudet- <agoudet-@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/23 19:19:14 by agoudet-          #+#    #+#             */
-/*   Updated: 2026/11/20 14:08:40 by agoudet-         ###   ########.fr       */
+/*   Updated: 2026/11/24 20:08:09 by agoudet-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static bool	simulation_is_running(t_data *data)
-{
-	if (data->running == false)
-		return (false);
-	return (true);
-}
-
-static void	take_forks(t_philo *philo)
+static void	take_forks_and_eat(t_philo *philo)
 {
 	const bool	id_is_even = philo->id % 2 == 0;
+	t_time_msec	time_to_eat;
 
+	time_to_eat = philo->data->time_to_eat;
 	if (id_is_even)
 	{
 		pthread_mutex_lock(philo->right_fork);
@@ -37,10 +32,17 @@ static void	take_forks(t_philo *philo)
 		pthread_mutex_lock(philo->right_fork);
 		print_status(philo, "has taken a fork");
 	}
+	pthread_mutex_lock(&philo->data->state_lock);
+	philo->last_meal_time = get_time_in_ms();
+	pthread_mutex_unlock(&philo->data->state_lock);
+	print_status(philo, "is eating");
+	ft_usleep(time_to_eat);
+	pthread_mutex_unlock(philo->left_fork);
+	pthread_mutex_unlock(philo->right_fork);	
 }
-// NOTE on take_forks() above
+// NOTE on taking of forks
 //
-// Philosophers take forks through an asymmetrical grab logic:
+// Philosophers take their forks through an asymmetrical grab logic:
 // 1. Even-numbered philosophers (2,4,6...) take their right fork first.
 // 2. The rest (i.e. odd-numbered; 1,3,5...) take their left fork first.
 //
@@ -49,25 +51,24 @@ static void	take_forks(t_philo *philo)
 void	*philo_routine(void *arg)
 {
 	t_philo		*philo;
-	t_time_msec	time_to_eat;
 	t_time_msec	time_to_sleep;
 
 	philo = (t_philo *)arg;
-	time_to_eat = philo->data->time_to_eat;
 	time_to_sleep = philo->data->time_to_sleep;
-	while (simulation_is_running(philo->data))
+	pthread_mutex_lock(&philo->data->state_lock);
+	while (philo->data->running)
 	{
-		take_forks(philo);
-		philo->last_meal_time = get_time_in_ms();
-		print_status(philo, "is eating");
-		ft_usleep(time_to_eat);
-		pthread_mutex_unlock(philo->left_fork);
-		pthread_mutex_unlock(philo->right_fork);
+		pthread_mutex_unlock(&philo->data->state_lock);
+		take_forks_and_eat(philo);
+		pthread_mutex_lock(&philo->data->state_lock);
 		philo->meals_eaten++;
+		pthread_mutex_unlock(&philo->data->state_lock);
 		print_status(philo, "is sleeping");
 		ft_usleep(time_to_sleep);
 		print_status(philo, "is thinking");
+		pthread_mutex_lock(&philo->data->state_lock);
 	}
+	pthread_mutex_unlock(&philo->data->state_lock);
 	return (NULL);
 }
 
