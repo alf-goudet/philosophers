@@ -2,7 +2,7 @@ NAME = philo
 NAME_TSAN = philo_tsan
 
 SRCS = ft_atoi_philo.c utils.c init.c get_time_in_ms.c clean_up_data.c \
-	   philo_routine.c spawn_threads.c main.c
+	   philo_routine.c spawn_threads.c monitor_thread.c main.c
 
 OBJS = $(SRCS:.c=.o)
 

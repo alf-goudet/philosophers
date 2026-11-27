@@ -6,7 +6,7 @@
 /*   By: agoudet- <agoudet-@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/19 19:26:27 by agoudet-          #+#    #+#             */
-/*   Updated: 2026/11/10 21:43:56 by agoudet-         ###   ########.fr       */
+/*   Updated: 2026/11/18 19:38:41 by agoudet-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,13 @@ int	spawn_threads(t_data *data, size_t total_philos)
 	{
 		curr_philo = &(data->philos[i]);
 		curr_thread = &(curr_philo->thread);
+		curr_philo->last_meal_time = data->start;
 		check = pthread_create(curr_thread, NULL, &philo_routine, curr_philo);
 		if (check != 0)
 			return (pthread_create_error(data, i, total_philos), check);
 		i++;
 	}
-	return (join_threads(data, total_philos));
+	return (0);
 }
 
 int	join_threads(t_data *data, size_t running_threads)

@@ -6,7 +6,7 @@
 /*   By: agoudet- <agoudet-@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/23 16:14:01 by agoudet-          #+#    #+#             */
-/*   Updated: 2026/11/10 21:14:52 by agoudet-         ###   ########.fr       */
+/*   Updated: 2026/11/18 19:38:50 by agoudet-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ typedef struct s_data
 // Helper functions
 size_t		ft_strlen(const char *s);
 int			ft_isdigit(int c);
-void		print_error(char *msg);
 int			ft_atoi(const char *nptr);
 int			ft_usleep(size_t ms);
 int			init_data(char **argv, t_data *data);
@@ -77,6 +76,8 @@ int			spawn_threads(t_data *data, size_t total_philos);
 int			join_threads(t_data *data, size_t running_threads);
 void		*philo_routine(void *arg);
 void		*one_philo_routine(void *arg);
+void		*philo_monitor(void *arg);
 void		print_status(t_philo *philo, char *status);
+void		print_error(char *msg);
 
 #endif
